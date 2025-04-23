@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>MidTerm List</title>
+    <meta charset="UTF-8">
+    <style>
+        table {width: 100%; border-collapse: collapse; margin-top: 20px;}
+        th, td {border: 1px solid #ddd; padding: 8px; text-align: center;}
+        th {background-color: #f2f2f2; text-align: center;}
+        
+        pagination {list-style-type: none; padding: 0; text-align: center; margin-top: 20px;}
+        .pagination li {display: inline; margin: 0 5px;}
+        .pagination li a {text-decoration: none; padding: 8px 12px; border: 1px solid #ddd;}
+        .pagination li a:hover {background-color: #ddd;}
+        .pagination li.active a {background-color: #007bff; color: white; border: 1px solid #007bff;}
+        
+        .url-link {text-decoration: none; color: blue;}
+    </style>
+</head>
+<body>
+    <h1>중간 고사 검색 페이지</h1>
+    <form th:action="@{/product/list}" method="get">
+        <input type="hidden" id="pageNum" name="pageNum" />
+        <div>
+            <label for="searchProductType">상품 유형 검색:</label>
+            <input type="text" id="searchProductType" name="searchProductType" placeholder="상품 유형 검색" />
+            <label for="searchProductName">상품 이름 검색:</label>
+            <input type="text" id="searchProductName" name="searchProductName" placeholder="상품 이름 검색" />
+            <button type="submit">검색</button>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>상품유형</th>
+                <th>상품이름</th>
+                <th>상품가격</th>
+                <th>등록일시</th>
+                <th>수정일시</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="product : ${result.PROUDCT_LIST}">
+                <td th:text="${product.product_seq}"></td>
+                <td th:text="${product.product_type}"></td>
+                <td><a class="url-link" th:text></a></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul class="pagination">        
+        <!-- 페이지 번호 반복 -->
+        <li th:each="page : ${result.pagingMap.PAGE_BLOCK_LIST}" th:classappend="${page} == ${result.pagingMap.PAGE_NUM} ? 'active'">
+            <a th:href="@{/product/list(pageNum=${page}, searchProductType=${result.paramsMap.searchProductType}, searchProductName=${result.paramsMap.searchProductName})}" th:text="${page}"></a>
+        </li>
+    </ul>
+</body>
+
+</html>
